@@ -1,12 +1,15 @@
 from typing import Iterable, Union
 
 
+Component = Union[str, 'tag']
+
+
 class tag:
     def __init__(self, **kwargs):
         self._components: Iterable[Union[str, tag]] = []
         self._attributes = kwargs
 
-    def __class_getitem__(cls, comps: Union['tag', str, Iterable[Union[str, 'tag']]]) -> 'tag':
+    def __class_getitem__(cls, comps: Union[Component, Iterable[Component]]) -> 'tag':
         inst = cls()
         if isinstance(comps, str) or isinstance(comps, tag):
             inst._components = (comps,)
@@ -15,7 +18,7 @@ class tag:
 
         return inst
     
-    def __getitem__(self, comps: Union['tag', str, Iterable[Union[str, 'tag']]]) -> 'tag':
+    def __getitem__(self, comps: Union[Component, Iterable[Component]]) -> 'tag':
         if isinstance(comps, str) or isinstance(comps, tag):
             self._components = (comps,)
         else:
