@@ -189,6 +189,22 @@ class h1(tag):
     pass
 
 
+class h2(tag):
+    pass
+
+
+class h3(tag):
+    pass
+
+
+class h4(tag):
+    pass
+
+
+class h5(tag):
+    pass
+
+
 class h6(tag):
     pass
 
