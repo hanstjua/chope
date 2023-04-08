@@ -10,3 +10,4 @@ authors = [
 description = "CSS & HTML on Python Easily"
 readme = "README.md"
 requires-python = ">=3.7"
+dependencies = ["pytest"]
