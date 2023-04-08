@@ -37,7 +37,7 @@ def test_should_render_nested_components_correctly():
     assert component.render(4) == expected
 
 def test_when_negative_number_is_passed_to_render_should_render_with_zero_indent():
-    expected = "<a>\ntet\n</a>"
+    expected = "<a>\ntext\n</a>"
 
     class a(tag):
         pass
