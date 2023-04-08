@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chope"
+authors = [
+    {name = "Johan Tjuatja", email = "hanstjua@yahoo.co.id"},
+]
+description = "CSS & HTML on Python Easily"
+readme = "README.md"
+requires-python = ">=3.7"
