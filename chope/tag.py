@@ -1,4 +1,4 @@
-from typing import Iterable, List, Union
+from typing import Iterable, Union
 
 
 class tag:
