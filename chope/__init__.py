@@ -189,10 +189,6 @@ class h1(tag):
     pass
 
 
-class h1(tag):
-    pass
-
-
 class h2(tag):
     pass
 
