@@ -13,23 +13,11 @@ class acronym(tag):
     pass
 
 
-class abbr(tag):
-    pass
-
-
 class address(tag):
     pass
 
 
 class applet(tag):
-    pass
-
-
-class embed(tag):
-    pass
-
-
-class object(tag):
     pass
 
 
@@ -117,10 +105,6 @@ class colgroup(tag):
     pass
 
 
-class colgroup(tag):
-    pass
-
-
 class data(tag):
     pass
 
@@ -149,10 +133,6 @@ class dir(tag):
     pass
 
 
-class ul(tag):
-    pass
-
-
 class div(tag):
     pass
 
@@ -178,10 +158,6 @@ class fieldset(tag):
 
 
 class figcaption(tag):
-    pass
-
-
-class figure(tag):
     pass
 
 
@@ -261,15 +237,7 @@ class label(tag):
     pass
 
 
-class input(tag):
-    pass
-
-
 class legend(tag):
-    pass
-
-
-class fieldset(tag):
     pass
 
 
@@ -397,23 +365,11 @@ class source(tag):
     pass
 
 
-class video(tag):
-    pass
-
-
-class audio(tag):
-    pass
-
-
 class span(tag):
     pass
 
 
 class strike(tag):
-    pass
-
-
-class s(tag):
     pass
 
 
@@ -430,10 +386,6 @@ class sub(tag):
 
 
 class summary(tag):
-    pass
-
-
-class details(tag):
     pass
 
 
@@ -490,14 +442,6 @@ class tr(tag):
 
 
 class track(tag):
-    pass
-
-
-class video(tag):
-    pass
-
-
-class audio(tag):
     pass
 
 
