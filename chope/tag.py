@@ -6,7 +6,7 @@ Component = Union[str, 'tag']
 
 class tag:
     def __init__(self, **kwargs):
-        self._components: Iterable[Union[str, tag]] = []
+        self._components: Iterable[Component] = []
         self._attributes = kwargs
 
     def __class_getitem__(cls, comps: Union[Component, Iterable[Component]]) -> 'tag':
