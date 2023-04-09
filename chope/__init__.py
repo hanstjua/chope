@@ -1,485 +1,485 @@
-from chope.tag import tag
+from chope.element import element
 
 
-class a(tag):
+class a(element):
     pass
 
 
-class abbr(tag):
+class abbr(element):
     pass
 
 
-class acronym(tag):
+class acronym(element):
     pass
 
 
-class address(tag):
+class address(element):
     pass
 
 
-class applet(tag):
+class applet(element):
     pass
 
 
-class area(tag):
+class area(element):
     pass
 
 
-class article(tag):
+class article(element):
     pass
 
 
-class aside(tag):
+class aside(element):
     pass
 
 
-class audio(tag):
+class audio(element):
     pass
 
 
-class b(tag):
+class b(element):
     pass
 
 
-class base(tag):
+class base(element):
     pass
 
 
-class basefont(tag):
+class basefont(element):
     pass
 
 
-class bdi(tag):
+class bdi(element):
     pass
 
 
-class bdo(tag):
+class bdo(element):
     pass
 
 
-class big(tag):
+class big(element):
     pass
 
 
-class blockquote(tag):
+class blockquote(element):
     pass
 
 
-class body(tag):
+class body(element):
     pass
 
 
-class br(tag):
+class br(element):
     pass
 
 
-class button(tag):
+class button(element):
     pass
 
 
-class canvas(tag):
+class canvas(element):
     pass
 
 
-class caption(tag):
+class caption(element):
     pass
 
 
-class center(tag):
+class center(element):
     pass
 
 
-class cite(tag):
+class cite(element):
     pass
 
 
-class code(tag):
+class code(element):
     pass
 
 
-class col(tag):
+class col(element):
     pass
 
 
-class colgroup(tag):
+class colgroup(element):
     pass
 
 
-class data(tag):
+class data(element):
     pass
 
 
-class datalist(tag):
+class datalist(element):
     pass
 
 
-class dd(tag):
+class dd(element):
     pass
 
 
-class details(tag):
+class details(element):
     pass
 
 
-class dfn(tag):
+class dfn(element):
     pass
 
 
-class dialog(tag):
+class dialog(element):
     pass
 
 
-class dir(tag):
+class dir(element):
     pass
 
 
-class div(tag):
+class div(element):
     pass
 
 
-class dl(tag):
+class dl(element):
     pass
 
 
-class dt(tag):
+class dt(element):
     pass
 
 
-class em(tag):
+class em(element):
     pass
 
 
-class embed(tag):
+class embed(element):
     pass
 
 
-class fieldset(tag):
+class fieldset(element):
     pass
 
 
-class figcaption(tag):
+class figcaption(element):
     pass
 
 
-class figure(tag):
+class figure(element):
     pass
 
 
-class font(tag):
+class font(element):
     pass
 
 
-class footer(tag):
+class footer(element):
     pass
 
 
-class form(tag):
+class form(element):
     pass
 
 
-class frame(tag):
+class frame(element):
     pass
 
 
-class frameset(tag):
+class frameset(element):
     pass
 
 
-class h1(tag):
+class h1(element):
     pass
 
 
-class h2(tag):
+class h2(element):
     pass
 
 
-class h3(tag):
+class h3(element):
     pass
 
 
-class h4(tag):
+class h4(element):
     pass
 
 
-class h5(tag):
+class h5(element):
     pass
 
 
-class h6(tag):
+class h6(element):
     pass
 
 
-class head(tag):
+class head(element):
     pass
 
 
-class header(tag):
+class header(element):
     pass
 
 
-class hr(tag):
+class hr(element):
     pass
 
 
-class html(tag):
+class html(element):
     pass
 
 
-class i(tag):
+class i(element):
     pass
 
 
-class iframe(tag):
+class iframe(element):
     pass
 
 
-class img(tag):
+class img(element):
     pass
 
 
-class input(tag):
+class input(element):
     pass
 
 
-class ins(tag):
+class ins(element):
     pass
 
 
-class kbd(tag):
+class kbd(element):
     pass
 
 
-class label(tag):
+class label(element):
     pass
 
 
-class legend(tag):
+class legend(element):
     pass
 
 
-class li(tag):
+class li(element):
     pass
 
 
-class link(tag):
+class link(element):
     pass
 
 
-class main(tag):
+class main(element):
     pass
 
 
-class map(tag):
+class map(element):
     pass
 
 
-class mark(tag):
+class mark(element):
     pass
 
 
-class meta(tag):
+class meta(element):
     pass
 
 
-class meter(tag):
+class meter(element):
     pass
 
 
-class nav(tag):
+class nav(element):
     pass
 
 
-class noframes(tag):
+class noframes(element):
     pass
 
 
-class noscript(tag):
+class noscript(element):
     pass
 
 
-class object(tag):
+class object(element):
     pass
 
 
-class ol(tag):
+class ol(element):
     pass
 
 
-class optgroup(tag):
+class optgroup(element):
     pass
 
 
-class option(tag):
+class option(element):
     pass
 
 
-class output(tag):
+class output(element):
     pass
 
 
-class p(tag):
+class p(element):
     pass
 
 
-class param(tag):
+class param(element):
     pass
 
 
-class picture(tag):
+class picture(element):
     pass
 
 
-class pre(tag):
+class pre(element):
     pass
 
 
-class progress(tag):
+class progress(element):
     pass
 
 
-class q(tag):
+class q(element):
     pass
 
 
-class rp(tag):
+class rp(element):
     pass
 
 
-class rt(tag):
+class rt(element):
     pass
 
 
-class ruby(tag):
+class ruby(element):
     pass
 
 
-class s(tag):
+class s(element):
     pass
 
 
-class samp(tag):
+class samp(element):
     pass
 
 
-class script(tag):
+class script(element):
     pass
 
 
-class section(tag):
+class section(element):
     pass
 
 
-class select(tag):
+class select(element):
     pass
 
 
-class small(tag):
+class small(element):
     pass
 
 
-class source(tag):
+class source(element):
     pass
 
 
-class span(tag):
+class span(element):
     pass
 
 
-class strike(tag):
+class strike(element):
     pass
 
 
-class strong(tag):
+class strong(element):
     pass
 
 
-class style(tag):
+class style(element):
     pass
 
 
-class sub(tag):
+class sub(element):
     pass
 
 
-class summary(tag):
+class summary(element):
     pass
 
 
-class sup(tag):
+class sup(element):
     pass
 
 
-class svg(tag):
+class svg(element):
     pass
 
 
-class table(tag):
+class table(element):
     pass
 
 
-class tbody(tag):
+class tbody(element):
     pass
 
 
-class td(tag):
+class td(element):
     pass
 
 
-class template(tag):
+class template(element):
     pass
 
 
-class textarea(tag):
+class textarea(element):
     pass
 
 
-class tfoot(tag):
+class tfoot(element):
     pass
 
 
-class th(tag):
+class th(element):
     pass
 
 
-class thead(tag):
+class thead(element):
     pass
 
 
-class time(tag):
+class time(element):
     pass
 
 
-class title(tag):
+class title(element):
     pass
 
 
-class tr(tag):
+class tr(element):
     pass
 
 
-class track(tag):
+class track(element):
     pass
 
 
-class tt(tag):
+class tt(element):
     pass
 
 
-class u(tag):
+class u(element):
     pass
 
 
-class ul(tag):
+class ul(element):
     pass
 
 
-class var(tag):
+class var(element):
     pass
 
 
-class video(tag):
+class video(element):
     pass
 
 
-class wbr(tag):
+class wbr(element):
     pass
