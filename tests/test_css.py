@@ -1,4 +1,4 @@
-from chope.css import *
+from chope.css import css, rule, em, px, rem
 
 expected = '''h1 {
    color: red;
