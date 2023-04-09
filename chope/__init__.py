@@ -1,4 +1,4 @@
-from chope.tag import tag
+from chope.tag import *
 
 
 class a(tag):
