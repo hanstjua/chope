@@ -1,35 +1,35 @@
-from chope import element
-from chope.css import css, rule
+from chope import Element
+from chope.css import Css, Rule
 
 expected = \
-"""<h1 color="yellow" size=123>
+"""<e1 class="my-class" color="yellow" size=123>
     text
-    <h2>
+    <e2>
         word
-    </h2>
-    <h3>
+    </e2>
+    <e3>
         letter
         space
-    </h3>
-</h1>"""
+    </e3>
+</e1>"""
 
 
 def test_should_render_nested_components_correctly():
-    class h1(element):
+    class e1(Element):
         pass
 
-    class h2(element):
+    class e2(Element):
         pass
 
-    class h3(element):
+    class e3(Element):
         pass
 
-    component = h1(color='yellow', size=123)[
+    component = e1(class_='my-class', color='yellow', size=123)[
         'text',
-        h2[
+        e2[
             'word'
         ],
-        h3[
+        e3[
             'letter',
             'space'
         ]
@@ -40,20 +40,20 @@ def test_should_render_nested_components_correctly():
 def test_when_negative_number_is_passed_to_render_should_render_with_zero_indent():
     expected = "<a>\ntext\n</a>"
 
-    class a(element):
+    class a(Element):
         pass
 
     assert a['text'].render(-1) == expected
 
 def test_able_to_render_css():
-    expected = "<a>\n  b {\n    prop: text;\n  }\n</a>"
+    expected = '<a>\n  b {\n    prop: text;\n  }\n</a>'
 
-    class a(element):
+    class a(Element):
         pass
 
     comp = a[
-        css[
-            'b': rule(prop='text')
+        Css[
+            'b': Rule(prop='text')
         ]
     ]
 

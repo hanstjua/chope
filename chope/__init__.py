@@ -1,485 +1,485 @@
-from chope.element import element
+from chope.element import Element
 
 
-class a(element):
+class a(Element):
     pass
 
 
-class abbr(element):
+class abbr(Element):
     pass
 
 
-class acronym(element):
+class acronym(Element):
     pass
 
 
-class address(element):
+class address(Element):
     pass
 
 
-class applet(element):
+class applet(Element):
     pass
 
 
-class area(element):
+class area(Element):
     pass
 
 
-class article(element):
+class article(Element):
     pass
 
 
-class aside(element):
+class aside(Element):
     pass
 
 
-class audio(element):
+class audio(Element):
     pass
 
 
-class b(element):
+class b(Element):
     pass
 
 
-class base(element):
+class base(Element):
     pass
 
 
-class basefont(element):
+class basefont(Element):
     pass
 
 
-class bdi(element):
+class bdi(Element):
     pass
 
 
-class bdo(element):
+class bdo(Element):
     pass
 
 
-class big(element):
+class big(Element):
     pass
 
 
-class blockquote(element):
+class blockquote(Element):
     pass
 
 
-class body(element):
+class body(Element):
     pass
 
 
-class br(element):
+class br(Element):
     pass
 
 
-class button(element):
+class button(Element):
     pass
 
 
-class canvas(element):
+class canvas(Element):
     pass
 
 
-class caption(element):
+class caption(Element):
     pass
 
 
-class center(element):
+class center(Element):
     pass
 
 
-class cite(element):
+class cite(Element):
     pass
 
 
-class code(element):
+class code(Element):
     pass
 
 
-class col(element):
+class col(Element):
     pass
 
 
-class colgroup(element):
+class colgroup(Element):
     pass
 
 
-class data(element):
+class data(Element):
     pass
 
 
-class datalist(element):
+class datalist(Element):
     pass
 
 
-class dd(element):
+class dd(Element):
     pass
 
 
-class details(element):
+class details(Element):
     pass
 
 
-class dfn(element):
+class dfn(Element):
     pass
 
 
-class dialog(element):
+class dialog(Element):
     pass
 
 
-class dir(element):
+class dir(Element):
     pass
 
 
-class div(element):
+class div(Element):
     pass
 
 
-class dl(element):
+class dl(Element):
     pass
 
 
-class dt(element):
+class dt(Element):
     pass
 
 
-class em(element):
+class em(Element):
     pass
 
 
-class embed(element):
+class embed(Element):
     pass
 
 
-class fieldset(element):
+class fieldset(Element):
     pass
 
 
-class figcaption(element):
+class figcaption(Element):
     pass
 
 
-class figure(element):
+class figure(Element):
     pass
 
 
-class font(element):
+class font(Element):
     pass
 
 
-class footer(element):
+class footer(Element):
     pass
 
 
-class form(element):
+class form(Element):
     pass
 
 
-class frame(element):
+class frame(Element):
     pass
 
 
-class frameset(element):
+class frameset(Element):
     pass
 
 
-class h1(element):
+class h1(Element):
     pass
 
 
-class h2(element):
+class h2(Element):
     pass
 
 
-class h3(element):
+class h3(Element):
     pass
 
 
-class h4(element):
+class h4(Element):
     pass
 
 
-class h5(element):
+class h5(Element):
     pass
 
 
-class h6(element):
+class h6(Element):
     pass
 
 
-class head(element):
+class head(Element):
     pass
 
 
-class header(element):
+class header(Element):
     pass
 
 
-class hr(element):
+class hr(Element):
     pass
 
 
-class html(element):
+class html(Element):
     pass
 
 
-class i(element):
+class i(Element):
     pass
 
 
-class iframe(element):
+class iframe(Element):
     pass
 
 
-class img(element):
+class img(Element):
     pass
 
 
-class input(element):
+class input(Element):
     pass
 
 
-class ins(element):
+class ins(Element):
     pass
 
 
-class kbd(element):
+class kbd(Element):
     pass
 
 
-class label(element):
+class label(Element):
     pass
 
 
-class legend(element):
+class legend(Element):
     pass
 
 
-class li(element):
+class li(Element):
     pass
 
 
-class link(element):
+class link(Element):
     pass
 
 
-class main(element):
+class main(Element):
     pass
 
 
-class map(element):
+class map(Element):
     pass
 
 
-class mark(element):
+class mark(Element):
     pass
 
 
-class meta(element):
+class meta(Element):
     pass
 
 
-class meter(element):
+class meter(Element):
     pass
 
 
-class nav(element):
+class nav(Element):
     pass
 
 
-class noframes(element):
+class noframes(Element):
     pass
 
 
-class noscript(element):
+class noscript(Element):
     pass
 
 
-class object(element):
+class object(Element):
     pass
 
 
-class ol(element):
+class ol(Element):
     pass
 
 
-class optgroup(element):
+class optgroup(Element):
     pass
 
 
-class option(element):
+class option(Element):
     pass
 
 
-class output(element):
+class output(Element):
     pass
 
 
-class p(element):
+class p(Element):
     pass
 
 
-class param(element):
+class param(Element):
     pass
 
 
-class picture(element):
+class picture(Element):
     pass
 
 
-class pre(element):
+class pre(Element):
     pass
 
 
-class progress(element):
+class progress(Element):
     pass
 
 
-class q(element):
+class q(Element):
     pass
 
 
-class rp(element):
+class rp(Element):
     pass
 
 
-class rt(element):
+class rt(Element):
     pass
 
 
-class ruby(element):
+class ruby(Element):
     pass
 
 
-class s(element):
+class s(Element):
     pass
 
 
-class samp(element):
+class samp(Element):
     pass
 
 
-class script(element):
+class script(Element):
     pass
 
 
-class section(element):
+class section(Element):
     pass
 
 
-class select(element):
+class select(Element):
     pass
 
 
-class small(element):
+class small(Element):
     pass
 
 
-class source(element):
+class source(Element):
     pass
 
 
-class span(element):
+class span(Element):
     pass
 
 
-class strike(element):
+class strike(Element):
     pass
 
 
-class strong(element):
+class strong(Element):
     pass
 
 
-class style(element):
+class style(Element):
     pass
 
 
-class sub(element):
+class sub(Element):
     pass
 
 
-class summary(element):
+class summary(Element):
     pass
 
 
-class sup(element):
+class sup(Element):
     pass
 
 
-class svg(element):
+class svg(Element):
     pass
 
 
-class table(element):
+class table(Element):
     pass
 
 
-class tbody(element):
+class tbody(Element):
     pass
 
 
-class td(element):
+class td(Element):
     pass
 
 
-class template(element):
+class template(Element):
     pass
 
 
-class textarea(element):
+class textarea(Element):
     pass
 
 
-class tfoot(element):
+class tfoot(Element):
     pass
 
 
-class th(element):
+class th(Element):
     pass
 
 
-class thead(element):
+class thead(Element):
     pass
 
 
-class time(element):
+class time(Element):
     pass
 
 
-class title(element):
+class title(Element):
     pass
 
 
-class tr(element):
+class tr(Element):
     pass
 
 
-class track(element):
+class track(Element):
     pass
 
 
-class tt(element):
+class tt(Element):
     pass
 
 
-class u(element):
+class u(Element):
     pass
 
 
-class ul(element):
+class ul(Element):
     pass
 
 
-class var(element):
+class var(Element):
     pass
 
 
-class video(element):
+class video(Element):
     pass
 
 
-class wbr(element):
+class wbr(Element):
     pass

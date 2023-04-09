@@ -1,9 +1,10 @@
-from chope.css import css, rule, em, px, rem
+from chope.css import Css, Rule, px, rem, percent, in_
 
 expected = '''h1 {
    color: red;
    font-size: 1.2rem;
-   padding: 1em;
+   padding: 1in;
+   margin: 2%;
    outline: 1px dotted green;
 }
 
@@ -11,15 +12,17 @@ expected = '''h1 {
    background: black;
 }'''
 
+
 def test_should_render_css_correctly():
-    style = css[
-        'h1': rule(
+    style = Css[
+        'h1': Rule(
             color='red',
             font_size=rem/1.2,
-            padding=em/1,
+            padding=in_/1,
+            margin=percent/2,
             outline=(px/1, 'dotted', 'green')
         ),
-        '.my-class': rule(
+        '.my-class': Rule(
             background='black'
         )
     ]

@@ -1,16 +1,16 @@
 from typing import Iterable, Union
 
-from chope.css import css
+from chope.css import Css
 
 
-class element:
+class Element:
     def __init__(self, **kwargs):
         self._components: Iterable[Component] = []
         self._attributes = kwargs
 
-    def __class_getitem__(cls, comps: Union['Component', Iterable['Component']]) -> 'element':
+    def __class_getitem__(cls, comps: Union['Component', Iterable['Component']]) \
+            -> 'Element':
         inst = cls()
-        args = Component.__args__
         if isinstance(comps, Component.__args__):
             inst._components = (comps,)
         else:
@@ -18,7 +18,8 @@ class element:
 
         return inst
 
-    def __getitem__(self, comps: Union['Component', Iterable['Component']]) -> 'element':
+    def __getitem__(self, comps: Union['Component', Iterable['Component']]) \
+            -> 'Element':
         if isinstance(comps, Component.__args__):
             self._components = (comps,)
         else:
@@ -33,18 +34,18 @@ class element:
                 comp_str += f'{" " * indent}{comp}\n'
             else:
                 _comp_str = comp.render(indent).replace(
-                    "\n", f"\n{' ' * indent}")
+                    '\n', f'\n{" " * indent}')
                 comp_str += f'{" " * indent}{_comp_str}\n'
 
         name = self.__class__.__name__
 
         attrs_str = ''
-        for k, v in self._attributes.items():
-            v = f'"{v}"' if isinstance(v, str) else str(v)
+        for attr, val in self._attributes.items():
+            val = f'"{val}"' if isinstance(val, str) else str(val)
 
-            attrs_str += f' {k}={v}'
+            attrs_str += f' {attr.replace("_", "")}={val}'
 
         return f'<{name}{attrs_str}>{comp_str}</{name}>'
 
 
-Component = Union[str, element, css]
+Component = Union[str, Element, Css]
