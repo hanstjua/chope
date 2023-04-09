@@ -1,27 +1,27 @@
 from typing import Dict, Iterable, Union
 
 
-class rule:
+class Rule:
     def __init__(self, **kwargs):
         self.__declarations = kwargs
 
     def render(self, indent: int = 2) -> str:
         ret = ''
 
-        for k, v in self.__declarations.items():
-            if isinstance(v, Iterable) and not isinstance(v, str):
-                v = ' '.join(v)
+        for property, value in self.__declarations.items():
+            if isinstance(value, Iterable) and not isinstance(value, str):
+                value = ' '.join(value)
 
-            ret += f'{" " * indent}{k.replace("_", "-")}: {v};\n'
+            ret += f'{" " * indent}{property.replace("_", "-")}: {value};\n'
 
         return ret
 
 
-class css:
-    def __init__(self, rules: Dict[str, rule]) -> None:
+class Css:
+    def __init__(self, rules: Dict[str, Rule]) -> None:
         self._rules = rules
 
-    def __class_getitem__(cls, rules: Union[slice, Iterable[slice]]) -> 'css':
+    def __class_getitem__(cls, rules: Union[slice, Iterable[slice]]) -> 'Css':
         rules_dict = {}
 
         if isinstance(rules, slice):
@@ -47,6 +47,18 @@ class Unit:
         return str(value) + self.__name
 
 
+cm = Unit('cm')
+ch = Unit('ch')
 em = Unit('em')
+ex = Unit('ex')
+in_ = Unit('in')
+mm = Unit('mm')
+pc = Unit('pc')
+percent = Unit('%')
+pt = Unit('pt')
 px = Unit('px')
 rem = Unit('rem')
+vh = Unit('vh')
+vmax = Unit('vmax')
+vmin = Unit('vmin')
+vw = Unit('vw')
