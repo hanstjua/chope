@@ -37,13 +37,19 @@ def test_should_render_nested_components_correctly():
 
     assert component.render(4) == expected
 
-def test_when_negative_number_is_passed_to_render_should_render_with_zero_indent():
-    expected = "<a>\ntext\n</a>"
+def test_zero_indent_should_render_flat_string():
+    expected = "<a>text</a>"
 
     class a(Element):
         pass
 
-    assert a['text'].render(-1) == expected
+    assert a['text'].render(0) == expected
+
+def test_when_negative_number_is_passed_to_render_should_render_with_zero_indent():
+    class a(Element):
+        pass
+
+    assert a['text'].render(-1) == a['text'].render(0)
 
 def test_able_to_render_css():
     expected = '<a>\n  b {\n    prop: text;\n  }\n</a>'
@@ -53,7 +59,7 @@ def test_able_to_render_css():
 
     comp = a[
         Css[
-            'b': Rule(prop='text')
+            'b': dict(prop='text')
         ]
     ]
 
