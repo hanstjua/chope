@@ -7,14 +7,15 @@ class Rule:
         self.__name = name
 
     def render(self, indent: int = 2) -> str:
-        nl  ='\n'
+        nl = '\n'
         indented = indent > 0
         declarations_str = ''
         for property, value in self.__declarations.items():
             if isinstance(value, Iterable) and not isinstance(value, str):
                 value = ' '.join(value)
 
-            declarations_str += f'{" " * indent}{property.replace("_", "-")}: {value};{nl * indented}'
+            declarations_str += \
+                f'{" " * indent}{property.replace("_", "-")}: {value};{nl * indented}'
 
         return f'{self.__name} {{{nl * indented}{declarations_str}}}'
 
@@ -27,8 +28,9 @@ class Css:
         if isinstance(items, slice):
             rules = [Rule(items.start.replace('_', '-'), items.stop)]
         else:
-            rules = [Rule(item.start.replace('_', '-'), item.stop) for item in items]
-                
+            rules = [Rule(item.start.replace('_', '-'), item.stop)
+                     for item in items]
+
         return cls(rules)
 
     def render(self, indent: int = 2) -> str:
