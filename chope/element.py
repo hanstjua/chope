@@ -28,14 +28,17 @@ class Element:
         return self
 
     def render(self, indent: int = 2) -> str:
-        comp_str = '\n'
+        nl = '\n'
+        indented = indent > 0
+
+        comp_str = nl * indented
         for comp in self._components:
             if isinstance(comp, str):
-                comp_str += f'{" " * indent}{comp}\n'
+                comp_str += f'{" " * indent}{comp}{nl * indented}'
             else:
                 _comp_str = comp.render(indent).replace(
-                    '\n', f'\n{" " * indent}')
-                comp_str += f'{" " * indent}{_comp_str}\n'
+                    nl, f'{nl * indented}{" " * indent}')
+                comp_str += f'{" " * indent}{_comp_str}{nl * indented}'
 
         name = self.__class__.__name__
 
