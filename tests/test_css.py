@@ -1,4 +1,4 @@
-from chope.css import Css, Rule, px, rem, percent, in_
+from chope.css import Css, px, rem, percent, in_
 
 expected = '''h1 {
    color: red;
@@ -31,7 +31,7 @@ def test_should_render_css_correctly():
 
 def test_when_indent_is_zero_should_render_flat_string():
     expected = 'a {b: c;}d {e: f;}'
-    
+
     style = Css['a': dict(b='c'), 'd': dict(e='f')]
 
     assert style.render(0) == expected

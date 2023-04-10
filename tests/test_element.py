@@ -1,5 +1,5 @@
 from chope import Element
-from chope.css import Css, Rule
+from chope.css import Css
 
 expected = \
 """<e1 class="my-class" color="yellow" size=123>
