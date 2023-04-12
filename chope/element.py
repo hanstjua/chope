@@ -8,8 +8,8 @@ class Element:
     def __init__(self, *args, **kwargs):
         self._components: Iterable[Component] = []
         self._attributes = kwargs
-        self._classes = ''
-        self._id = ''
+        self._classes = self._attributes.pop('class_', '')
+        self._id = self._attributes.pop('id', '')
 
         if args:
             selector_pattern = \
@@ -17,14 +17,12 @@ class Element:
             
             id, classes = re.findall(selector_pattern, args[0])[0]
 
-            if id and self._attributes.get('id'):
+            if id and self._id:
                 raise ValueError(
-                    f'id declared twice: #{id} and id="{self._attributes["id"]}"')
+                    f'id declared twice: #{id} and id="{self._id}"')
 
             self._id = id
-            self._classes = classes.replace('.', ' ')
-
-        self._classes = f'{self._classes} {self._attributes.pop("class_", "")}'.strip()
+            self._classes = f'{classes.replace(".", " ")} {self._classes}'.strip()
 
     def __class_getitem__(cls, comps: Union['Component', Iterable['Component']]) \
             -> 'Element':
