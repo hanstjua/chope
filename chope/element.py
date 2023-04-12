@@ -12,16 +12,19 @@ class Element:
         self._id = ''
 
         if args:
-            selector_pattern = r'^(?:#([^\s\.#]+))?(?:\.([^\s#]+))?'  ## #id.class1.class2
+            selector_pattern = \
+                r'^(?:#([^\s\.#]+))?(?:\.([^\s#]+))?'  ## #id.class1.class2
+            
             id, classes = re.findall(selector_pattern, args[0])[0]
 
             if id and self._attributes.get('id'):
-                raise ValueError(f'id declared twice: #{id} and id="{self._attributes["id"]}"')
+                raise ValueError(
+                    f'id declared twice: #{id} and id="{self._attributes["id"]}"')
 
             self._id = id
             self._classes = classes.replace('.', ' ')
 
-        self._classes += f' {self._attributes.pop("class_", "")}'
+        self._classes = f'{self._classes} {self._attributes.pop("class_", "")}'.strip()
 
     def __class_getitem__(cls, comps: Union['Component', Iterable['Component']]) \
             -> 'Element':
@@ -58,7 +61,7 @@ class Element:
         name = self.__class__.__name__
 
         attrs_str = f' id="{self._id}"' if self._id else ''
-        attrs_str = attrs_str + f' class="{self._classes}"' if self._classes else attrs_str
+        attrs_str += f' class="{self._classes}"' if self._classes else ''
 
         for attr, val in self._attributes.items():
             val = f'"{val}"' if isinstance(val, str) else str(val)
