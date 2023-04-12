@@ -1,12 +1,27 @@
+import re
 from typing import Iterable, Union
 
 from chope.css import Css
 
 
 class Element:
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         self._components: Iterable[Component] = []
         self._attributes = kwargs
+        self._classes = ''
+        self._id = ''
+
+        if args:
+            selector_pattern = r'^(?:#([^\s\.#]+))?(?:\.([^\s#]+))?'  ## #id.class1.class2
+            id, classes = re.findall(selector_pattern, args[0])[0]
+
+            if id and self._attributes.get('id'):
+                raise ValueError(f'id declared twice: #{id} and id="{self._attributes["id"]}"')
+
+            self._id = id
+            self._classes = classes.replace('.', ' ')
+
+        self._classes += f' {self._attributes.pop("class_", "")}'
 
     def __class_getitem__(cls, comps: Union['Component', Iterable['Component']]) \
             -> 'Element':
@@ -42,11 +57,13 @@ class Element:
 
         name = self.__class__.__name__
 
-        attrs_str = ''
+        attrs_str = f' id="{self._id}"' if self._id else ''
+        attrs_str = attrs_str + f' class="{self._classes}"' if self._classes else attrs_str
+
         for attr, val in self._attributes.items():
             val = f'"{val}"' if isinstance(val, str) else str(val)
 
-            attrs_str += f' {attr.replace("_", "")}={val}'
+            attrs_str += f' {attr}={val}'
 
         return f'<{name}{attrs_str}>{comp_str}</{name}>'
 

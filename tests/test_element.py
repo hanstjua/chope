@@ -1,3 +1,4 @@
+import pytest
 from chope import Element
 from chope.css import Css
 
@@ -64,3 +65,18 @@ def test_able_to_render_css():
     ]
 
     assert comp.render(2) == expected
+
+def test_infer_id_and_classes_through_css_selector():
+    expected = '<a id="id" class="class1 class2 class3 class4">text</a>'
+
+    class a(Element):
+        pass
+
+    assert a('#id.class1.class2', class_='class3 class4')['text'].render(0) == expected
+
+def test_should_raise_exception_if_id_detected_in_both_kwargs_and_css_selector():
+    class a(Element):
+        pass
+
+    with pytest.raises(ValueError):
+        a('#a', id='a')
