@@ -4,10 +4,27 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chope"
+version = "0.1.1"
 authors = [
     {name = "Johan Tjuatja", email = "hanstjua@yahoo.co.id"},
 ]
 description = "CSS & HTML on Python Easily"
 readme = "README.md"
 requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
 dependencies = ["pytest"]
+
+[project.urls]
+"Homepage" = "https://github.com/hanstjua/chope"
+"Bug Tracker" = "https://github.com/hanstjua/chope/issues"
+
+[tool.setuptools]
+packages = ["chope"]
