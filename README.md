@@ -5,13 +5,14 @@ CSS &amp; HTML on Python Easily.
 ![PyPI](https://img.shields.io/pypi/v/chope)
 ![GitHub](https://img.shields.io/github/license/hanstjua/chope)
 ![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/hanstjua/chope/run_tests.yml?branch=main)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/chope?label=python)
 
 Chope is a library that aims to provide a HTML and CSS domain-specific language (DSL) for Python.
-It draws inspiration from Clojure's [Hiccup](https://github.com/weavejester/hiccup) and [Emotion](https://emotion.sh/docs/introduction).
+It draws inspiration from Clojure's [Hiccup](https://github.com/weavejester/hiccup) and JavaScript's [Emotion](https://emotion.sh/docs/introduction).
 
 ## Install
 
-Chope can be installed throough pip.
+Chope can be installed through pip.
 
 `pip install chope`
     
@@ -42,7 +43,7 @@ page = html[
         h1['Title'],
         div(class_='outer-div')[
             div(class_='inner-div')[
-                'Some content.
+                'Some content.'
             ]
         ]
     ]
@@ -86,6 +87,23 @@ ul[
     (li[str(i)] for i in range(3))
 ]
 ```
+
+#### Creating custom elements
+
+If you want to create a custom element with a custom tag, simply inherit from the `Element` class.
+
+```python
+from chope import Element
+
+
+class custom(Element):  ## class name will be used as tag name during rendering
+    pass
+
+
+custom['some content.']  ## <custom>some content.</custom>
+```
+
+Normally, you don't need to override any method of `Element`, but if you want to change how your element is rendered, you can override the `render()` method.
 
 ### CSS
 
@@ -176,4 +194,81 @@ Css[
         padding='58px 0 0'
     )
 ]
+```
+
+## Render
+
+Once you are done defining your CSS and HTML, you can render them into string using the `render()` method.
+
+```python
+>>> page = html[
+    head[
+        style[
+            Css[
+                '.item': dict(font_size=px/14)
+            ]
+        ]
+    ],
+    body[
+        div('#my-item.item')['My content.']
+    ]
+]
+>>> print(page.render())
+'<html>
+  <head>
+    <style>
+      .item {
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="my-item" class="item">
+      My content.
+    </div>
+  </body>
+</html>'
+```
+
+By default, `render()` will add indentations with 2 spaces. You can modify this using the `indent` keyword argument.
+
+```python
+>>> print(page.render(indent=4))
+'<html>
+    <head>
+        <style>
+            .item {
+                font-size: 14px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="my-item" class="item">
+            My content.
+        </div>
+    </body>
+</html>'
+>>> print(page.render(indent=0))  ## render flat string
+'<html><head><style>.item {font-size: 14px;}</style></head><body><div id="my-item" class="item">My content.</div></body></html>'
+```
+
+CSS objects can also be rendered the same way.
+
+```python
+>>> css = Css[
+    'h1': dict(font_size=px/14),
+    '.my-class': dict(
+        color='blue',
+        padding=(0,0,px/20)
+    )
+]
+>>> print(css.render())
+'h1 {
+    font-size: 14px;
+}
+
+.my-class {
+    color: blue;
+    padding: 0 0 20px;
+}'
 ```

@@ -3,10 +3,10 @@ from chope import Element
 from chope.css import Css
 
 expected = \
-"""<e1 class="my-class" color="yellow" size=123>
+"""<e1 class="my-class" color="yellow" size=123 autofocus>
     text
     <e2>
-        word
+        word<br>
     </e2>
     <e3>
         letter
@@ -25,10 +25,10 @@ def test_should_render_nested_components_correctly():
     class e3(Element):
         pass
 
-    component = e1(class_='my-class', color='yellow', size=123)[
+    component = e1(class_='my-class', color='yellow', size=123, autofocus=True)[
         'text',
         e2[
-            'word'
+            'word\n'
         ],
         e3[
             'letter',
