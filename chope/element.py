@@ -50,7 +50,8 @@ class Element:
         comp_str = nl * indented
         for comp in self._components:
             if isinstance(comp, str):
-                comp_str += f'{" " * indent}{comp}{nl * indented}'
+                _comp = comp.replace('\n', '<br>')
+                comp_str += f'{" " * indent}{_comp}{nl * indented}'
             else:
                 _comp_str = comp.render(indent).replace(
                     nl, f'{nl * indented}{" " * indent}')
@@ -62,9 +63,12 @@ class Element:
         attrs_str += f' class="{self._classes}"' if self._classes else ''
 
         for attr, val in self._attributes.items():
-            val = f'"{val}"' if isinstance(val, str) else str(val)
+            if isinstance(val, bool):
+                attrs_str += f' {attr}'
+            else:
+                val = f'"{val}"' if isinstance(val, str) else str(val)
 
-            attrs_str += f' {attr}={val}'
+                attrs_str += f' {attr}={val}'
 
         return f'<{name}{attrs_str}>{comp_str}</{name}>'
 
