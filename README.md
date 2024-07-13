@@ -3,6 +3,7 @@
 CSS &amp; HTML on Python Easily.
 
 ![PyPI](https://img.shields.io/pypi/v/chope)
+![Pepy Total Downlods](https://img.shields.io/pepy/dt/chope)
 ![GitHub](https://img.shields.io/github/license/hanstjua/chope)
 ![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/hanstjua/chope/run_tests.yml?branch=main)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/chope?label=python)
