@@ -42,7 +42,7 @@ class polygon(Function):
 
         try:
             for x, y in args:
-                func_args += f'x y'
+                func_args += 'x y'
         except TypeError:
             raise ValueError('argument for polygon must be a pair of values')
         
