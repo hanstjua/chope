@@ -1,5 +1,6 @@
 import re
-from typing import Iterable, Union
+from typing import Any, Dict, Iterable, Union
+from chope.variable import Var
 
 from chope.css import Css
 
@@ -52,6 +53,9 @@ class Element:
             if isinstance(comp, str):
                 _comp = comp.replace('\n', '<br>')
                 comp_str += f'{" " * indent}{_comp}{nl * indented}'
+            elif isinstance(comp, Var):
+                _comp = comp.default.replace('\n', '<br>')
+                comp_str += f'{" " * indent}{_comp}{nl * indented}'
             else:
                 _comp_str = comp.render(indent).replace(
                     nl, f'{nl * indented}{" " * indent}')
@@ -71,6 +75,24 @@ class Element:
                 attrs_str += f' {attr}={val}'
 
         return f'<{name}{attrs_str}>{comp_str}</{name}>'
+    
+    def set_vars(self, values: Dict[str, Any]) -> 'Component':
+        def set_var(comp: Component, values: Dict[str, Any]) -> Component:
+            if isinstance(comp, (Element, Css)):
+                return comp.set_vars(values)
+            elif isinstance(comp, Var):
+                return comp.to_value(values)
+            else:
+                return comp
+            
+        ret = self.__class__(
+            id=set_var(self._id, values),
+            class_=set_var(self._classes, values),
+            **{key: set_var(value, values) for key, value in self._attributes.items()}
+        )
+        ret._components = tuple(set_var(comp, values) for comp in self._components)
+
+        return ret
 
 
-Component = Union[str, Element, Css]
+Component = Union[str, Element, Css, Var]

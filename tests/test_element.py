@@ -1,6 +1,7 @@
 import pytest
 from chope import Element
 from chope.css import Css
+from chope.variable import Var
 
 expected = \
 """<e1 class="my-class" color="yellow" size=123 autofocus>
@@ -80,3 +81,30 @@ def test_should_raise_exception_if_id_detected_in_both_kwargs_and_css_selector()
 
     with pytest.raises(ValueError):
         a('#a', id='a')
+
+def test_set_variable_values():
+    expected = '<a id="id" count=1>Outer<a name="default"><b name="inner">Inner</b></a></a>'
+
+    class a(Element):
+        pass
+
+    class b(Element):
+        pass
+
+    comp = a(id = Var('id'), count = Var('count'))[
+        Var('outer'),
+        a(name = Var('name', 'default'))[
+            Var('inner')
+        ]
+    ]
+
+    values = {
+        'id': 'id',
+        'count': 1,
+        'outer': 'Outer',
+        'inner': b(name='inner')['Inner']
+    }
+
+    new_comp = comp.set_vars(values)
+    
+    assert new_comp.render(indent=0) == expected
