@@ -1,3 +1,4 @@
+from ast import literal_eval
 from functools import reduce
 import re
 from typing import Any, Dict, Iterable, Set, Union
@@ -53,13 +54,15 @@ class Element:
         return self
 
     def render(self, indent: int = 2) -> str:
-        def render_var(value) -> str:
+        def render_var(value, quote_str=False) -> str:
             if isinstance(value, (Element, Css)):
                 return value.render(indent=indent).replace('\n', f'\n{" " * indent}')
             elif isinstance(value, Var):
-                return render_var(value.value)
+                return render_var(value.value, quote_str)
+            elif isinstance(value, str):
+                return '"' + value.replace('\n', '<br>') + '"' if quote_str else value.replace('\n', '<br>')
             else:
-                return str(value).replace('\n', '<br>')
+                return str(value)
                     
         nl = '\n'
         indented = indent > 0
@@ -78,14 +81,14 @@ class Element:
 
         name = self.__class__.__name__
 
-        attrs_str = f' id="{render_var(self._id)}"' if self._id else ''
-        attrs_str += f' class="{render_var(self._classes)}"' if self._classes else ''
+        attrs_str = f' id={render_var(self._id, True)}' if self._id else ''
+        attrs_str += f' class={render_var(self._classes, True)}' if self._classes else ''
 
         for attr, val in self._attributes.items():
             if isinstance(val, bool):
                 attrs_str += f' {attr}'
             else:
-                attrs_str += f' {attr}="{render_var(val)}"'
+                attrs_str += f' {attr}={render_var(val, True)}'
 
         return f'<{name}{attrs_str}>{comp_str}</{name}>'
     
@@ -100,10 +103,15 @@ class Element:
         ret.update({val.name for val in self._attributes.values() if isinstance(val, Var)})
 
         def get_var(comp):
-            if isinstance(comp, Element):
+            if isinstance(comp, (Element, Css)):
                 return comp.get_vars()
             elif isinstance(comp, Var):
-                return {comp.name}
+                if isinstance(comp.value, Var):
+                    return {comp.name}.union(get_var(comp.value))
+                elif isinstance(comp.value, (Element, Css)):
+                    return {comp.name}.union(comp.value.get_vars())
+                else:
+                    return {comp.name}
             else:
                 return set()
             
@@ -116,18 +124,41 @@ class Element:
             if isinstance(comp, (Element, Css)):
                 return comp.set_vars(values)
             elif isinstance(comp, Var):
-                return comp.set_value(values)
+                new_var = comp.set_value(values)
+                if new_var == comp and isinstance(new_var.value, (Element, Css)):
+                    return Var(new_var.name, new_var.value.set_vars(values))
+                else:
+                    return new_var
             else:
                 return comp
             
-        ret = self.__class__(
-            id=set_var(self._id, values),
-            class_=set_var(self._classes, values),
-            **{key: set_var(value, values) for key, value in self._attributes.items()}
-        )
-        ret._components = tuple(set_var(comp, values) for comp in self._components)
+        id = set_var(self._id, values)
+        classes = set_var(self._classes, values)
+        attributes = {key: set_var(value, values) for key, value in self._attributes.items()}
+        components = tuple(set_var(comp, values) for comp in self._components)
 
-        return ret
+        if id == self._id \
+            and classes == self._classes \
+            and attributes == self._attributes \
+            and components == self._components:
+            return self
+        
+        else:
+            ret = self.__class__(
+                id=id,
+                class_=classes,
+                **attributes
+            )[
+                components
+            ]
+
+            return ret
+    
+    def __str__(self) -> str:
+        return self.render(0)
+    
+    def __repr__(self) -> str:
+        return self.__str__()
 
 
 Component = Union[str, Element, Css, Var]

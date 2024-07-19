@@ -76,26 +76,40 @@ def test_should_raise_exception_if_id_detected_in_both_kwargs_and_css_selector()
         a('#a', id='a')
 
 def test_set_variable_values():
-    expected_render = '<a id="id" count="1">Outer<a name="default"><b name="inner">Inner</b></a></a>'
+    expected_render = '<a id="id" count=1>Outer<a name="default"><b name="inner">Inner</b></a><a>set_nested</a><a><a>set_nested</a></a><a>set_nested</a></a>'
     expected_comp = a(id = Var('id', 'id'), count = Var('count', 1))[
         Var('outer', 'Outer'),
         a(name = Var('name', 'default'))[
             Var('inner', b(name='inner')['Inner'])
-        ]
+        ],
+        Var('unset_nested', Var('set_nested', a['set_nested'])),
+        Var('unset_nested', a[Var('set_nested', a['set_nested'])]),
+        Var('set_nested', a['set_nested'])
     ]
 
     comp = a(id = Var('id'), count = Var('count'))[
+        # variable in element
         Var('outer'),
+
+        # variable in inner element
         a(name = Var('name', 'default'))[
             Var('inner')
-        ]
+        ],
+
+        # nested variables
+        Var('unset_nested', Var('set_nested')),
+
+        # nested variable inside element
+        Var('unset_nested', a[Var('set_nested')]),
+        Var('set_nested', a[Var('unset_nested')])
     ]
 
     values = {
         'id': 'id',
         'count': 1,
         'outer': 'Outer',
-        'inner': b(name='inner')['Inner']
+        'inner': b(name='inner')['Inner'],
+        'set_nested': a['set_nested']
     }
 
     new_comp = comp.set_vars(values)
@@ -103,14 +117,18 @@ def test_set_variable_values():
     assert new_comp == expected_comp
     assert new_comp.render(indent=0) == expected_render
 
-def test_get_vars():
-    vars_count = 3
+def test_get_variable_names():
+    vars_count = 5
     vars = [Var(str(i)) for i in range(vars_count)]
 
     comp = a(var=vars[0])[
         vars[1],
         a(var=vars[1])[
-            vars[2]
+            vars[2],
+
+            # nested variables
+            Var('0', vars[3]),
+            Var('0', a[vars[4]])
         ]
     ]
 

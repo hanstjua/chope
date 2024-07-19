@@ -18,4 +18,17 @@ class Var:
         return self._value
     
     def set_value(self, values: Dict[str, Any]) -> 'Var':
-        return self if self._name not in values else Var(self._name, values[self._name])
+        if self._name in values:
+            return Var(self._name, values[self._name])
+        else:
+            new_value = self._value.set_value(values) if isinstance(self._value, Var) else self._value
+            if new_value != self._value:
+                return Var(self._name, new_value)
+            else:
+                return self
+            
+    def __str__(self) -> str:
+        return f'Var["{self.name}","{self.value}"]'
+    
+    def __repr__(self) -> str:
+        return self.__str__()
