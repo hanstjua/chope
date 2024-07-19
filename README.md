@@ -273,3 +273,93 @@ CSS objects can also be rendered the same way.
     padding: 0 0 20px;
 }'
 ```
+
+## Variable
+
+If you'd like to build a HTML template, you can do so using the `Var` object.
+
+
+```python
+from chope import *
+from chope.variable import Var
+
+template = html[
+    div[Var('my-content')]
+]
+
+final_html = template.set_vars({'my-content': 'This is my content.'})
+
+print(final_html.render(indent=0))  ## <html><div>This is my content.</div></html>
+```
+
+A variable can have a default value.
+
+```python
+>>> print(div[Var('content', 'This is default content.')].render(indent=0))
+<div>This is default content.</div>
+```
+
+Variable value can be set to an element.
+
+```python
+>>> content = div[Var('inner')]
+>>> new_content = content.set_vars({'inner': div['This is inner content.']})
+>>> print(new_content.render())
+<div>
+  <div>
+    This is inner content.
+  </div>
+</div>
+```
+
+`Var` works in an element attribute as well.
+
+```python
+>>> content = div(name=Var('name'))['My content.']
+>>> new_content = content.set_vars({'name': 'my-content'})
+>>> print(new_content.render())
+<div name="my-content">
+  My content.
+</div>
+```
+
+You can use `Var` in CSS too.
+
+```python
+>>> css = Css[
+    # CSS rule as a variable
+    'h1': dict(font_size=Var('h1.font-size')),
+
+    # CSS declaration as a variable
+    '.my-class': Var('my-class')
+]
+>>> new_css = css.set_vars({'h1.font-size': px/1, 'my-class': {'color': 'blue'}})
+>>> print(new_css.render())
+h1 {
+  font-size: 1px;
+}
+
+.my-class {
+  color: blue;
+}
+```
+
+The `set` of all variable names in an element/CSS can be retrieved using the `get_vars()` method.
+
+```python
+>>> template = html[
+    style[
+        Css[
+            'h1': dict(font_size=Var('css.h1.font-size'))
+        ]
+    ],
+    div[
+        Var('main-content'),
+        div[
+            Var('inner-content')
+        ]
+    ]
+]
+>>> print(template.get_vars())
+{'main-content', 'inner-content', 'css.h1.font-size'}
+```

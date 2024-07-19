@@ -4,6 +4,10 @@ from typing import Any, Dict, Iterable, List, Set, Union
 from chope.variable import Var
 
 
+class RenderError(Exception):
+    pass
+
+
 class Rule:
     def __init__(self, name: str, declarations: List[dict]):
         self.__declarations = declarations
@@ -27,6 +31,10 @@ class Rule:
                 return var
 
         declarations = get_value(self.__declarations)
+
+        if not isinstance(declarations, dict):
+            raise RenderError(f"Invalid declaration {declarations} in rule '{self.__name}'. Declarations must be a dict object.")
+        
         for property, value in declarations.items():
             value = get_value(value)
             if isinstance(value, Iterable) and not isinstance(value, str):

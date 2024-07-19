@@ -58,7 +58,7 @@ class Element:
             if isinstance(value, (Element, Css)):
                 return value.render(indent=indent).replace('\n', f'\n{" " * indent}')
             elif isinstance(value, Var):
-                return render_var(value.value, quote_str)
+                return render_var(value.value, quote_str=quote_str)
             elif isinstance(value, str):
                 return '"' + value.replace('\n', '<br>') + '"' if quote_str else value.replace('\n', '<br>')
             else:
