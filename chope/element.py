@@ -1,7 +1,7 @@
 from ast import literal_eval
 from functools import reduce
 import re
-from typing import Any, Dict, Iterable, Set, Union
+from typing import Any, Dict, Iterable, Set, Tuple, Union
 from chope.variable import Var
 
 from chope.css import Css
@@ -10,9 +10,10 @@ from chope.css import Css
 class Element:
     def __init__(self, *args, **kwargs):
         self._components: Iterable[Component] = []
-        self._attributes = kwargs
-        self._classes = self._attributes.pop('class_', '')
-        self._id = self._attributes.pop('id', '')
+        
+        self._classes = kwargs.pop('class_', '')
+        self._id = kwargs.pop('id', '')
+        self._attributes = {key.replace('_', '-') : value for key, value in kwargs.items()}
 
         if args:
             selector_pattern = \
@@ -34,7 +35,7 @@ class Element:
             and self._classes == __value._classes \
             and self._id == __value._id
 
-    def __class_getitem__(cls, comps: Union['Component', Iterable['Component']]) \
+    def __class_getitem__(cls, comps: Union['Component', Iterable['Component'], Tuple['Component', ...]]) \
             -> 'Element':
         inst = cls()
         if isinstance(comps, Component.__args__):
@@ -44,7 +45,7 @@ class Element:
 
         return inst
 
-    def __getitem__(self, comps: Union['Component', Iterable['Component']]) \
+    def __getitem__(self, comps: Union['Component', Iterable['Component'], Tuple['Component', ...]]) \
             -> 'Element':
         if isinstance(comps, Component.__args__):
             self._components = (comps,)
