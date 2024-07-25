@@ -4,7 +4,7 @@ from chope.css import Css
 from chope.variable import Var
 
 expected = \
-"""<e1 class="my-class" color="yellow" size=123 autofocus>
+"""<e1 class="my-class" color="yellow" size=123 my-attr="yes" autofocus>
     text
     <e2>
         word<br>
@@ -34,7 +34,7 @@ def test_should_render_nested_components_correctly():
     class e3(Element):
         pass
 
-    component = e1(class_='my-class', color='yellow', size=123, autofocus=True)[
+    component = e1(class_='my-class', color='yellow', size=123, my_attr="yes", autofocus=True)[
         'text',
         e2[
             'word\n'
