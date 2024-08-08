@@ -1,5 +1,5 @@
-from chope.functions.function import Function
 from chope.css import px
+from chope.functions.function import Function
 
 
 def test_should_render_correctly():

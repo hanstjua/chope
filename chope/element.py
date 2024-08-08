@@ -1,98 +1,182 @@
-from ast import literal_eval
-from functools import reduce
 import re
+from functools import reduce
+from itertools import chain
 from typing import Any, Dict, Iterable, Set, Tuple, Union
-from chope.variable import Var
 
 from chope.css import Css
+from chope.variable import Var
+
+
+class DuplicateAttributeError(Exception):
+    pass
 
 
 class Element:
     def __init__(self, *args, **kwargs):
-        self._components: Iterable[Component] = []
-        
-        self._classes = kwargs.pop('class_', '')
-        self._id = kwargs.pop('id', '')
-        self._attributes = {key.replace('_', '-') : value for key, value in kwargs.items()}
+        self._components: Tuple[Component, ...] = ()
+
+        self._classes = ""
+        self._id = ""
+        self._attributes = {}
 
         if args:
-            selector_pattern = \
-                r'^(?:#([^\s\.#]+))?(?:\.([^\s#]+))?'  ## #id.class1.class2
-            
-            id, classes = re.findall(selector_pattern, args[0])[0]
+            selector_id, selector_classes = (
+                self.__get_id_classes_from_selector(args[0])
+                if len(args) % 2
+                else ("", "")
+            )
+            self._classes = selector_classes
 
-            if id and self._id:
-                raise ValueError(
-                    f'id declared twice: #{id} and id="{self._id}"')
+            tuple_id, tuple_classes, tuple_attrs = (
+                self.__get_id_classes_attrs_from_tuple(args[len(args) % 2 :])
+            )
 
-            self._id = id
-            self._classes = f'{classes.replace(".", " ")} {self._classes}'.strip()
+            if selector_id and tuple_id:
+                raise DuplicateAttributeError(
+                    f"id declared twice: id={selector_id} and id={tuple_id}"
+                )
+
+            self._id = selector_id or tuple_id
+            self._classes = (
+                f"{self._classes} {tuple_classes}".strip()
+                if tuple_classes
+                else self._classes
+            )
+
+            self._attributes.update(tuple_attrs)
+
+        if self._id and "id" in kwargs:
+            raise DuplicateAttributeError(
+                f'id declared twice: id={self._id} and id={kwargs["id"]}'
+            )
+
+        self._classes = (
+            f'{self._classes} {kwargs.pop("class_")}'.strip()
+            if "class_" in kwargs
+            else self._classes
+        )
+        self._id = kwargs.pop("id", self._id)
+        self._attributes.update(
+            {key.replace("_", "-"): value for key, value in kwargs.items()}
+        )
+
+    @staticmethod
+    def __get_id_classes_from_selector(selector: str) -> Tuple[str, str]:
+        selector_pattern = r"^(?:#([^\s\.#]+))?(?:\.([^\s#]+))?"  # id.class1.class2
+
+        results = re.findall(selector_pattern, selector)[0]
+        if results:
+            id, classes = results
+            return id, f'{classes.replace(".", " ")}'.strip()
+        else:
+            return "", ""
+
+    @staticmethod
+    def __get_id_classes_attrs_from_tuple(
+        tuple_: Tuple[str, ...],
+    ) -> Tuple[str, str, dict]:
+        attrs = {tuple_[i - 1]: tuple_[i] for i in range(1, len(tuple_), 2)}
+
+        id = attrs.pop("id", "")
+        classes = f'{attrs.pop("class")}'.strip() if "class" in attrs else ""
+
+        return id, classes, attrs
 
     def __eq__(self, __value: object) -> bool:
-        return isinstance(__value, Element) \
-            and self._components == __value._components \
-            and self._attributes == __value._attributes \
-            and self._classes == __value._classes \
+        return (
+            isinstance(__value, Element)
+            and self._components == __value._components
+            and self._attributes == __value._attributes
+            and self._classes == __value._classes
             and self._id == __value._id
+        )
 
-    def __class_getitem__(cls, comps: Union['Component', Iterable['Component'], Tuple['Component', ...]]) \
-            -> 'Element':
+    def __class_getitem__(
+        cls, comps: Union["Component", Iterable["Component"], Tuple[Any, ...]]
+    ) -> "Element":
         inst = cls()
         if isinstance(comps, Component.__args__):
             inst._components = (comps,)
         else:
-            inst._components = comps
+
+            def as_tuple(x):
+                return (
+                    (x,)
+                    if isinstance(x, str) or not isinstance(x, Iterable)
+                    else tuple(x)
+                )
+
+            comps_lists = (as_tuple(comp) for comp in comps)
+            inst._components = reduce(lambda l1, l2: l1 + l2, comps_lists)
 
         return inst
 
-    def __getitem__(self, comps: Union['Component', Iterable['Component'], Tuple['Component', ...]]) \
-            -> 'Element':
+    def __getitem__(
+        self, comps: Union["Component", Iterable["Component"], Tuple[Any, ...]]
+    ) -> "Element":
         if isinstance(comps, Component.__args__):
             self._components = (comps,)
         else:
-            self._components = comps
+
+            def as_tuple(x):
+                return (
+                    (x,)
+                    if isinstance(x, str) or not isinstance(x, Iterable)
+                    else tuple(x)
+                )
+
+            comps_lists = (as_tuple(comp) for comp in comps)
+            self._components = reduce(lambda l1, l2: l1 + l2, comps_lists)
 
         return self
 
     def render(self, indent: int = 2) -> str:
         def render_var(value, quote_str=False) -> str:
             if isinstance(value, (Element, Css)):
-                return value.render(indent=indent).replace('\n', f'\n{" " * indent}')
+                return value.render(indent=indent).replace("\n", f'\n{" " * indent}')
             elif isinstance(value, Var):
                 return render_var(value.value, quote_str=quote_str)
             elif isinstance(value, str):
-                return '"' + value.replace('\n', '<br>') + '"' if quote_str else value.replace('\n', '<br>')
+                return (
+                    '"' + value.replace("\n", "<br>") + '"'
+                    if quote_str
+                    else value.replace("\n", "<br>")
+                )
             else:
                 return str(value)
-                    
-        nl = '\n'
+
+        nl = "\n"
         indented = indent > 0
 
         comp_str = nl * indented
         for comp in self._components:
             if isinstance(comp, str):
-                _comp = comp.replace('\n', '<br>')
+                _comp = comp.replace("\n", "<br>")
                 comp_str += f'{" " * indent}{_comp}{nl * indented}'
-            elif isinstance(comp, Var):    
+            elif isinstance(comp, Var):
                 comp_str += f'{" " * indent}{render_var(comp)}{nl * indented}'
             else:
                 _comp_str = comp.render(indent).replace(
-                    nl, f'{nl * indented}{" " * indent}')
+                    nl, f'{nl * indented}{" " * indent}'
+                )
                 comp_str += f'{" " * indent}{_comp_str}{nl * indented}'
 
         name = self.__class__.__name__
 
-        attrs_str = f' id={render_var(self._id, True)}' if self._id else ''
-        attrs_str += f' class={render_var(self._classes, True)}' if self._classes else ''
+        attrs_str = f" id={render_var(self._id, True)}" if self._id else ""
+        attrs_str += (
+            f" class={render_var(self._classes, True)}" if self._classes else ""
+        )
 
         for attr, val in self._attributes.items():
-            if isinstance(val, bool):
-                attrs_str += f' {attr}'
-            else:
-                attrs_str += f' {attr}={render_var(val, True)}'
+            attrs_str += (
+                f" {attr}"
+                if isinstance(val, bool)
+                else f" {attr}={render_var(val, True)}"
+            )
 
-        return f'<{name}{attrs_str}>{comp_str}</{name}>'
-    
+        return f"<{name}{attrs_str}>{comp_str}</{name}>"
+
     def get_vars(self) -> Set[str]:
         ret = set()
         if isinstance(self._id, Var):
@@ -101,7 +185,9 @@ class Element:
         if isinstance(self._classes, Var):
             ret.add(self._classes.name)
 
-        ret.update({val.name for val in self._attributes.values() if isinstance(val, Var)})
+        ret.update(
+            {val.name for val in self._attributes.values() if isinstance(val, Var)}
+        )
 
         def get_var(comp):
             if isinstance(comp, (Element, Css)):
@@ -115,12 +201,14 @@ class Element:
                     return {comp.name}
             else:
                 return set()
-            
-        ret.update(reduce(lambda res, comp: res.union(get_var(comp)), self._components, set()))
 
-        return ret
-    
-    def set_vars(self, values: Dict[str, Any]) -> 'Component':
+        return ret.union(
+            reduce(lambda res, comp: res.union(get_var(comp)), self._components, set())
+        )
+
+    def set_vars(self, values_: Dict[str, Any] = {}, **kwargs) -> "Component":
+        combined_values = {k: v for k, v in chain(values_.items(), kwargs.items())}
+
         def set_var(comp: Component, values: Dict[str, Any]) -> Component:
             if isinstance(comp, (Element, Css)):
                 return comp.set_vars(values)
@@ -132,32 +220,29 @@ class Element:
                     return new_var
             else:
                 return comp
-            
-        id = set_var(self._id, values)
-        classes = set_var(self._classes, values)
-        attributes = {key: set_var(value, values) for key, value in self._attributes.items()}
-        components = tuple(set_var(comp, values) for comp in self._components)
 
-        if id == self._id \
-            and classes == self._classes \
-            and attributes == self._attributes \
-            and components == self._components:
+        id = set_var(self._id, combined_values)
+        classes = set_var(self._classes, combined_values)
+        attributes = {
+            key: set_var(value, combined_values)
+            for key, value in self._attributes.items()
+        }
+        components = tuple(set_var(comp, combined_values) for comp in self._components)
+
+        if (
+            id == self._id
+            and classes == self._classes
+            and attributes == self._attributes
+            and components == self._components
+        ):
             return self
-        
-        else:
-            ret = self.__class__(
-                id=id,
-                class_=classes,
-                **attributes
-            )[
-                components
-            ]
 
-            return ret
-    
+        else:
+            return self.__class__(id=id, class_=classes, **attributes)[components]
+
     def __str__(self) -> str:
         return self.render(0)
-    
+
     def __repr__(self) -> str:
         return self.__str__()
 

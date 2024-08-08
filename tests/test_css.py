@@ -1,5 +1,6 @@
 import pytest
-from chope.css import Css, px, rem, percent, in_, RenderError
+
+from chope.css import Css, RenderError, in_, percent, px, rem
 from chope.variable import Var
 
 expected = '''h1 {
@@ -66,13 +67,13 @@ def test_set_variable_values():
     ]
 
     values = {
-        'color': 'red',
-        'size_nested': px/5,
+        'color': 'blue',
+        'size_nested': px/50,
         'margin': percent/1,
         'my-class': {'background': 'black'}
     }
 
-    new_css = css.set_vars(values)
+    new_css = css.set_vars(values, color='red', size_nested=px/5)
 
     assert new_css == expected_css
     assert new_css.render(indent=0) == expected_render
