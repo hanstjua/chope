@@ -120,6 +120,14 @@ def test_should_raise_exception_if_id_detected_in_both_kwargs_and_css_selector()
         a("#a", id="a")
 
 
+def test_override_element_attributes():
+    expected_comp = a(name='content', id='overriden')['Content']
+
+    comp = a(name='content', id='original')['Content']
+
+    assert comp(id='overriden').render() == expected_comp.render()
+
+
 def test_set_variable_values():
     expected_render = '<a id="id" count=1>Outer<a name="default"><b name="inner">Inner</b></a><a>set_nested</a><a><a>set_nested</a></a><a>set_nested</a></a>'
     expected_comp = a(id=Var("id", "id"), count=Var("count", 1))[
@@ -184,6 +192,27 @@ def test_set_variable_values_using_kwargs():
     )
 
     assert new_comp == expected_comp
+
+
+def test_set_variables_to_iterables():
+    equivalent_comp = a[
+        b['0'],
+        b['1'],
+        b['2'],
+        b['3'],
+        b['4']
+    ]
+
+    expected = equivalent_comp.render()
+
+    comp = a[
+        Var('content'),
+        (b['3'], b['4'])
+    ]
+
+    result = comp.set_vars(content=(b[str(i)] for i in range(3))).render()
+
+    assert result == expected
 
 
 def test_get_variable_names():
