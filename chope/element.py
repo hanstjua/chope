@@ -129,24 +129,36 @@ class Element:
             self._components = reduce(lambda l1, l2: l1 + l2, comps_lists)
 
         return self
+    
+    def __call__(self, *args, **kwargs) -> 'Element':
+        ret = self.__class__()
+        updated_element = self.__class__(*args, **kwargs)
+        ret._components = self._components
+        ret._id = updated_element._id if updated_element._id else self._id
+        ret._classes = updated_element._classes if updated_element._classes else self._classes
+        ret._attributes = updated_element._attributes if updated_element._attributes else self._attributes
+
+        return ret
 
     def render(self, indent: int = 2) -> str:
+        nl = "\n"
+        indented = indent > 0
+
         def render_var(value, quote_str=False) -> str:
             if isinstance(value, (Element, Css)):
-                return value.render(indent=indent).replace("\n", f'\n{" " * indent}')
+                return value.render(indent=indent).replace(nl, f'{nl}{" " * indent}')
             elif isinstance(value, Var):
                 return render_var(value.value, quote_str=quote_str)
             elif isinstance(value, str):
                 return (
-                    '"' + value.replace("\n", "<br>") + '"'
+                    '"' + value.replace(nl, "<br>") + '"'
                     if quote_str
-                    else value.replace("\n", "<br>")
+                    else value.replace(nl, "<br>")
                 )
+            elif isinstance(value, Iterable):
+                return f'{nl * indented}{" " * indent}'.join((render_var(i) for i in value))
             else:
                 return str(value)
-
-        nl = "\n"
-        indented = indent > 0
 
         comp_str = nl * indented
         for comp in self._components:
