@@ -98,3 +98,12 @@ def test_get_variable_names():
     ]
 
     assert css.get_vars() == expected
+
+@pytest.mark.parametrize(
+        'input1, input2, expected',
+        ((Css['h1': {'asdf': 123}], Css['h1': {'asdf': 123}], True),
+         (Css['h1': {'asdf': 123}], Css['h1': {'asdf': 234}], False),
+         (Css['h1': {'asdf': 123}], 'some_str', False))
+)
+def test_comparison(input1, input2, expected):
+    assert (input1 == input2) == expected

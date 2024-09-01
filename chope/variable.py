@@ -2,7 +2,7 @@ from typing import Any, Dict
 
 
 class Var:
-    def __init__(self, name: str, value: Any = "") -> None:
+    def __init__(self, name: str, value: Any = None) -> None:
         self._name = name
         self._value = value
 
@@ -19,7 +19,7 @@ class Var:
 
     @property
     def value(self) -> Any:
-        return self._value
+        return self._value if self._value is not None else f'[{self.name} is not set]'
 
     def set_value(self, values: Dict[str, Any]) -> "Var":
         if self._name in values:
