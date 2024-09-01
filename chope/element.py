@@ -94,22 +94,7 @@ class Element:
     def __class_getitem__(
         cls, comps: Union["Component", Iterable["Component"], Tuple[Any, ...]]
     ) -> "Element":
-        inst = cls()
-        if isinstance(comps, Component.__args__):
-            inst._components = (comps,)
-        else:
-
-            def as_tuple(x):
-                return (
-                    (x,)
-                    if isinstance(x, str) or not isinstance(x, Iterable)
-                    else tuple(x)
-                )
-
-            comps_lists = (as_tuple(comp) for comp in comps)
-            inst._components = reduce(lambda l1, l2: l1 + l2, comps_lists)
-
-        return inst
+        return cls()[comps]
 
     def __getitem__(
         self, comps: Union["Component", Iterable["Component"], Tuple[Any, ...]]
@@ -125,8 +110,8 @@ class Element:
                     else tuple(x)
                 )
 
-            comps_lists = (as_tuple(comp) for comp in comps)
-            self._components = reduce(lambda l1, l2: l1 + l2, comps_lists)
+            comps_tuples = (as_tuple(comp) for comp in comps)
+            self._components = reduce(lambda l1, l2: l1 + l2, comps_tuples, ())
 
         return self
     
@@ -151,9 +136,11 @@ class Element:
                 return render_var(value.value, quote_str=quote_str)
             elif isinstance(value, str):
                 return (
-                    '"' + value.replace(nl, "<br>") + '"'
+                    f"'{value}'"
+                    if '"' in value
+                    else f'"{value}"'
                     if quote_str
-                    else value.replace(nl, "<br>")
+                    else value
                 )
             elif isinstance(value, Iterable):
                 return f'{nl * indented}{" " * indent}'.join((render_var(i) for i in value))

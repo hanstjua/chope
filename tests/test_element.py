@@ -232,3 +232,13 @@ def test_get_variable_names():
     expected = {str(i) for i in range(vars_count)}
 
     assert comp.get_vars() == expected
+
+def test_able_to_accept_empty_iterable_as_a_child():
+    comp = a[
+        b[[]],
+        b[()],
+        b[(i for i in range(0))]
+    ]
+    expected = '<a><b></b><b></b><b></b></a>'
+
+    assert comp.render(0) == expected

@@ -16,7 +16,8 @@ class Rule:
 
     def __eq__(self, __value: object) -> bool:
         return (
-            self.__declarations == __value.__declarations
+            isinstance(__value, Rule)
+            and self.__declarations == __value.__declarations
             and self.__name == __value.__name
         )
 
@@ -106,7 +107,7 @@ class Css:
         self._rules = rules
 
     def __eq__(self, __value: object) -> bool:
-        return self._rules == __value._rules
+        return isinstance(__value, Css) and self._rules == __value._rules
 
     def __class_getitem__(cls, items: Union[slice, Iterable[slice]]) -> "Css":
         if isinstance(items, slice):
