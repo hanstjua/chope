@@ -121,7 +121,8 @@ class Element:
         ret._components = self._components
         ret._id = updated_element._id if updated_element._id else self._id
         ret._classes = updated_element._classes if updated_element._classes else self._classes
-        ret._attributes = updated_element._attributes if updated_element._attributes else self._attributes
+        ret._attributes = dict(**self._attributes)
+        ret._attributes.update(updated_element._attributes)
 
         return ret
 

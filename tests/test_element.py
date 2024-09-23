@@ -121,11 +121,11 @@ def test_should_raise_exception_if_id_detected_in_both_kwargs_and_css_selector()
 
 
 def test_override_element_attributes():
-    expected_comp = a(name='content', id='overriden')['Content']
+    expected_comp = a(name='content', id='overriden', some_attr='new')['Content']
 
-    comp = a(name='content', id='original')['Content']
+    comp = a(name='content', id='original', some_attr='old')['Content']
 
-    assert comp(id='overriden').render() == expected_comp.render()
+    assert comp(id='overriden', some_attr='new').render() == expected_comp.render()
 
 
 def test_set_variable_values():
